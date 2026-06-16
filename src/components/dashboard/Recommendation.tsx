@@ -115,7 +115,8 @@ export function Recommendation() {
     fit: 30, loc: 20, rep: 20, fac: 15, ben: 15,
   });
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<typeof COMPANIES | null>(null);
+  type Ranked = (typeof COMPANIES)[number] & { score: number };
+  const [results, setResults] = useState<Ranked[] | null>(null);
 
   const totalWeight = Object.values(weights).reduce((a, b) => a + b, 0);
   const balanced = totalWeight === 100;
