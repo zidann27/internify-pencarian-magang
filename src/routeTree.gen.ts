@@ -10,13 +10,26 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RekomendasiRouteImport } from './routes/rekomendasi'
+import { Route as ProfilRouteImport } from './routes/profil'
+import { Route as PengaturanRouteImport } from './routes/pengaturan'
 import { Route as LowonganRouteImport } from './routes/lowongan'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as BookmarkRouteImport } from './routes/bookmark'
 import { Route as IndexRouteImport } from './routes/index'
 
 const RekomendasiRoute = RekomendasiRouteImport.update({
   id: '/rekomendasi',
   path: '/rekomendasi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfilRoute = ProfilRouteImport.update({
+  id: '/profil',
+  path: '/profil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PengaturanRoute = PengaturanRouteImport.update({
+  id: '/pengaturan',
+  path: '/pengaturan',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LowonganRoute = LowonganRouteImport.update({
@@ -29,6 +42,11 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BookmarkRoute = BookmarkRouteImport.update({
+  id: '/bookmark',
+  path: '/bookmark',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -37,35 +55,69 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bookmark': typeof BookmarkRoute
   '/dashboard': typeof DashboardRoute
   '/lowongan': typeof LowonganRoute
+  '/pengaturan': typeof PengaturanRoute
+  '/profil': typeof ProfilRoute
   '/rekomendasi': typeof RekomendasiRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bookmark': typeof BookmarkRoute
   '/dashboard': typeof DashboardRoute
   '/lowongan': typeof LowonganRoute
+  '/pengaturan': typeof PengaturanRoute
+  '/profil': typeof ProfilRoute
   '/rekomendasi': typeof RekomendasiRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bookmark': typeof BookmarkRoute
   '/dashboard': typeof DashboardRoute
   '/lowongan': typeof LowonganRoute
+  '/pengaturan': typeof PengaturanRoute
+  '/profil': typeof ProfilRoute
   '/rekomendasi': typeof RekomendasiRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/lowongan' | '/rekomendasi'
+  fullPaths:
+    | '/'
+    | '/bookmark'
+    | '/dashboard'
+    | '/lowongan'
+    | '/pengaturan'
+    | '/profil'
+    | '/rekomendasi'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/lowongan' | '/rekomendasi'
-  id: '__root__' | '/' | '/dashboard' | '/lowongan' | '/rekomendasi'
+  to:
+    | '/'
+    | '/bookmark'
+    | '/dashboard'
+    | '/lowongan'
+    | '/pengaturan'
+    | '/profil'
+    | '/rekomendasi'
+  id:
+    | '__root__'
+    | '/'
+    | '/bookmark'
+    | '/dashboard'
+    | '/lowongan'
+    | '/pengaturan'
+    | '/profil'
+    | '/rekomendasi'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BookmarkRoute: typeof BookmarkRoute
   DashboardRoute: typeof DashboardRoute
   LowonganRoute: typeof LowonganRoute
+  PengaturanRoute: typeof PengaturanRoute
+  ProfilRoute: typeof ProfilRoute
   RekomendasiRoute: typeof RekomendasiRoute
 }
 
@@ -76,6 +128,20 @@ declare module '@tanstack/react-router' {
       path: '/rekomendasi'
       fullPath: '/rekomendasi'
       preLoaderRoute: typeof RekomendasiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profil': {
+      id: '/profil'
+      path: '/profil'
+      fullPath: '/profil'
+      preLoaderRoute: typeof ProfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pengaturan': {
+      id: '/pengaturan'
+      path: '/pengaturan'
+      fullPath: '/pengaturan'
+      preLoaderRoute: typeof PengaturanRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lowongan': {
@@ -92,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bookmark': {
+      id: '/bookmark'
+      path: '/bookmark'
+      fullPath: '/bookmark'
+      preLoaderRoute: typeof BookmarkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -104,8 +177,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BookmarkRoute: BookmarkRoute,
   DashboardRoute: DashboardRoute,
   LowonganRoute: LowonganRoute,
+  PengaturanRoute: PengaturanRoute,
+  ProfilRoute: ProfilRoute,
   RekomendasiRoute: RekomendasiRoute,
 }
 export const routeTree = rootRouteImport
