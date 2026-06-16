@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard,
   Sparkles,
@@ -14,13 +15,13 @@ import {
 } from "lucide-react";
 
 const navItems = [
-  { label: "Dashboard", icon: LayoutDashboard, active: true },
-  { label: "Rekomendasi Magang", icon: Sparkles },
-  { label: "Lowongan Magang", icon: Briefcase },
-  { label: "Bookmark", icon: Bookmark },
-  { label: "Profil Saya", icon: User },
-  { label: "Pengaturan", icon: Settings },
-];
+  { label: "Dashboard", icon: LayoutDashboard, to: "/dashboard" },
+  { label: "Rekomendasi Magang", icon: Sparkles, to: "/rekomendasi" },
+  { label: "Lowongan Magang", icon: Briefcase, to: "/lowongan" },
+  { label: "Bookmark", icon: Bookmark, to: "/bookmark" },
+  { label: "Profil Saya", icon: User, to: "/profil" },
+  { label: "Pengaturan", icon: Settings, to: "/pengaturan" },
+] as const;
 
 export function DashboardLayout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -101,15 +102,16 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
 }
 
 function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
   return (
     <>
       <div className="flex items-center justify-between px-5 py-5">
-        <a href="/" className="flex items-center gap-2 font-bold tracking-tight">
+        <Link to="/" className="flex items-center gap-2 font-bold tracking-tight">
           <span className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-primary to-primary-glow shadow-[var(--shadow-glow-sm)]">
             <Sparkles className="h-4 w-4 text-primary-foreground" />
           </span>
           <span>Internify</span>
-        </a>
+        </Link>
         {onNavigate && (
           <button onClick={onNavigate} className="lg:hidden" aria-label="Tutup">
             <X className="h-5 w-5" />
@@ -117,23 +119,27 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
         )}
       </div>
       <nav className="flex flex-1 flex-col gap-1 px-3">
-        {navItems.map((item) => (
-          <button
-            key={item.label}
-            onClick={onNavigate}
-            className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
-              item.active
-                ? "bg-gradient-to-r from-primary/20 to-primary/5 text-foreground shadow-[inset_0_0_0_1px_color-mix(in_oklab,var(--primary)_30%,transparent)]"
-                : "text-muted-foreground hover:bg-card/60 hover:text-foreground"
-            }`}
-          >
-            {item.active && (
-              <span className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-primary to-primary-glow shadow-[0_0_12px_var(--primary)]" />
-            )}
-            <item.icon className="h-4 w-4" />
-            {item.label}
-          </button>
-        ))}
+        {navItems.map((item) => {
+          const active = pathname === item.to;
+          return (
+            <Link
+              key={item.label}
+              to={item.to}
+              onClick={onNavigate}
+              className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
+                active
+                  ? "bg-gradient-to-r from-primary/20 to-primary/5 text-foreground shadow-[inset_0_0_0_1px_color-mix(in_oklab,var(--primary)_30%,transparent)]"
+                  : "text-muted-foreground hover:bg-card/60 hover:text-foreground"
+              }`}
+            >
+              {active && (
+                <span className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-primary to-primary-glow shadow-[0_0_12px_var(--primary)]" />
+              )}
+              <item.icon className="h-4 w-4" />
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
       <div className="m-3 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/20 to-transparent p-4">
         <p className="text-xs font-semibold text-primary-glow">Pro Tip</p>
