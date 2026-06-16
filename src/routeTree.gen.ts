@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RekomendasiRouteImport } from './routes/rekomendasi'
+import { Route as LowonganRouteImport } from './routes/lowongan'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 
 const RekomendasiRoute = RekomendasiRouteImport.update({
   id: '/rekomendasi',
   path: '/rekomendasi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LowonganRoute = LowonganRouteImport.update({
+  id: '/lowongan',
+  path: '/lowongan',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -32,30 +38,34 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/lowongan': typeof LowonganRoute
   '/rekomendasi': typeof RekomendasiRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/lowongan': typeof LowonganRoute
   '/rekomendasi': typeof RekomendasiRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/lowongan': typeof LowonganRoute
   '/rekomendasi': typeof RekomendasiRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/rekomendasi'
+  fullPaths: '/' | '/dashboard' | '/lowongan' | '/rekomendasi'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/rekomendasi'
-  id: '__root__' | '/' | '/dashboard' | '/rekomendasi'
+  to: '/' | '/dashboard' | '/lowongan' | '/rekomendasi'
+  id: '__root__' | '/' | '/dashboard' | '/lowongan' | '/rekomendasi'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
+  LowonganRoute: typeof LowonganRoute
   RekomendasiRoute: typeof RekomendasiRoute
 }
 
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/rekomendasi'
       fullPath: '/rekomendasi'
       preLoaderRoute: typeof RekomendasiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lowongan': {
+      id: '/lowongan'
+      path: '/lowongan'
+      fullPath: '/lowongan'
+      preLoaderRoute: typeof LowonganRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -88,8 +105,19 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
+  LowonganRoute: LowonganRoute,
   RekomendasiRoute: RekomendasiRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
