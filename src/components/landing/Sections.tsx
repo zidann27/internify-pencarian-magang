@@ -1,5 +1,6 @@
 import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { Particles } from "./Particles";
 import {
   Sparkles,
   Zap,
